@@ -43,12 +43,13 @@
         androidTestImplementation(libs.ext.junit)
         androidTestImplementation(libs.espresso.core)
         //Xác thực người dùng
-        implementation("com.google.firebase:firebase-auth")
-        // CSDL
-        implementation("com.google.firebase:firebase-firestore")
+        implementation("com.google.firebase:firebase-auth:21.3.0")
+        //CSDL
+        implementation("com.google.firebase:firebase-firestore:24.7.1")
+
         implementation("com.google.firebase:firebase-database:19.6.0")
         //Thông báo đẩy
-        implementation("com.google.firebase:firebase-messaging")
+        implementation("com.google.firebase:firebase-messaging:23.1.2")
         //Điều hướng + Back
         implementation("androidx.navigation:navigation-fragment:2.7.2")
         implementation("androidx.navigation:navigation-ui:2.7.2")
@@ -59,3 +60,4 @@
         implementation("com.github.bumptech.glide:glide:4.12.0")
         annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     }
+
