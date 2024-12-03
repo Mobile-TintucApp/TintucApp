@@ -16,6 +16,15 @@
         android:theme="@style/Theme.TintucApp"
         tools:targetApi="31">
         <activity
+            android:name=".Thong_tin_ca_nhan_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Tin_doc_sau_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Tin_gan_sao_Activity"
+            android:exported="false" />
+        <activity
             android:name=".News_Detail_Activity"
             android:exported="false" />
         <activity
