@@ -16,6 +16,9 @@
         android:theme="@style/Theme.TintucApp"
         tools:targetApi="31">
         <activity
+            android:name=".MenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditPostActivity"
             android:exported="false" />
         <activity
