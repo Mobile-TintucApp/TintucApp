@@ -55,7 +55,7 @@
         implementation("androidx.navigation:navigation-ui:2.7.2")
         //ảnh internet
         implementation("com.squareup.picasso:picasso:2.8")
-
+        implementation("com.google.android.gms:play-services-auth:21.2.0")
         // Thêm Glide
         implementation("com.github.bumptech.glide:glide:4.12.0")
         annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")

@@ -2,6 +2,7 @@ package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button btnToAdmin = findViewById(R.id.btntoad);
+        Button logout = findViewById(R.id.logoutBtn);
         btnToAdmin.setOnClickListener(v -> {
             // Chuyển sang trang AdminPage
             Intent intent = new Intent(MainActivity.this, AdminPage.class);
@@ -25,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
         });
         // Load HomeFragment by default
         //loadFragment(new HomeFragment());
+
+        logout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                finish();
+            }
+        });
 
         // Handle Bottom Navigation selection
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
