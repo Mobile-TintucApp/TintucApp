@@ -16,6 +16,15 @@
         android:theme="@style/Theme.TintucApp"
         tools:targetApi="31">
         <activity
+            android:name=".EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity_add_post"
+            android:exported="false" />
+        <activity
+            android:name=".AdminPage"
+            android:exported="false" />
+        <activity
             android:name=".Thong_tin_ca_nhan_Activity"
             android:exported="false" />
         <activity

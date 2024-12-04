@@ -1,6 +1,8 @@
 package nhom4Mobile.ueh.edu.tintucapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Button btnToAdmin = findViewById(R.id.btntoad);
+        btnToAdmin.setOnClickListener(v -> {
+            // Chuyển sang trang AdminPage
+            Intent intent = new Intent(MainActivity.this, AdminPage.class);
+            startActivity(intent);
+        });
         // Load HomeFragment by default
         //loadFragment(new HomeFragment());
 
@@ -46,4 +53,5 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+
 }
