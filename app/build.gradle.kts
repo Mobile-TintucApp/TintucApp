@@ -39,6 +39,9 @@
         implementation(libs.activity)
         implementation(libs.constraintlayout)
         implementation(libs.firebase.firestore)
+        implementation(libs.legacy.support.v4)
+        implementation(libs.lifecycle.livedata.ktx)
+        implementation(libs.lifecycle.viewmodel.ktx)
         testImplementation(libs.junit)
         androidTestImplementation(libs.ext.junit)
         androidTestImplementation(libs.espresso.core)
@@ -59,5 +62,8 @@
         // Thêm Glide
         implementation("com.github.bumptech.glide:glide:4.12.0")
         annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+        //Thêm thư viện volly  - cho thời tiết
+        implementation("com.android.volley:volley:1.2.1")
     }
 

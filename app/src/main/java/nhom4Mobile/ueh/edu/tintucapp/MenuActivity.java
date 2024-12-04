@@ -50,5 +50,23 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        btnThoiTiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển sang Activity TinDocSauActivity
+                Intent intent = new Intent(MenuActivity.this, ThoitietActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển sang Activity TinDocSauActivity
+                Intent intent = new Intent(MenuActivity.this, Login.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
