@@ -2,12 +2,14 @@ package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -19,7 +21,7 @@ public class AdminPage extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AdminItemAdapter adapter;
     private List<Post> itemList;
-    private Button btnAdd, btnEdit, btnDelete;
+    private Button btnAdd, btnEdit, btnDelete, logout;
     private Post selectedPost;
     private int selectedPosition = -1; // Vị trí của item được chọn
 
@@ -36,6 +38,7 @@ public class AdminPage extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
+        logout = findViewById(R.id.logoutAdBtn);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));  // Cấu hình LayoutManager
 
         // Khởi tạo adapter và gán vào RecyclerView
@@ -78,6 +81,15 @@ public class AdminPage extends AppCompatActivity {
                 deletePost(selectedPost.getId());
             } else {
                 Toast.makeText(this, "Vui lòng chọn bài viết cần xóa", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                finish();
             }
         });
     }
