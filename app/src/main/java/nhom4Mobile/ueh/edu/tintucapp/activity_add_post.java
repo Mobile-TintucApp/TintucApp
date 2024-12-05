@@ -43,9 +43,9 @@ public class activity_add_post extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         QuerySnapshot documents = task.getResult();
                         int nextPostId = documents.size() + 1; // Số lượng bài viết hiện có + 1
-
+                        String postId = String.format("%03d", nextPostId);
                         // Điền ID tiếp theo vào etID
-                        etID.setText(String.valueOf("P"+nextPostId));
+                        etID.setText(String.valueOf("P"+postId));
                     } else {
                         Toast.makeText(this, "Lỗi khi tải dữ liệu bài viết", Toast.LENGTH_SHORT).show();
                     }
