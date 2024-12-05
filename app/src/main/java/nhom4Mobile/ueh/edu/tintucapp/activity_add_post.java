@@ -1,8 +1,10 @@
 package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.os.Bundle;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -11,7 +13,8 @@ import android.content.Intent;
 
 public class activity_add_post extends AppCompatActivity {
 
-    private EditText etID, etTitle, etDetailContent, etImage, etCategory; // Thêm EditText cho category
+    private EditText etID, etTitle, etDetailContent, etImage; // Các EditText
+    private Spinner spCategory; // Thay đổi thành Spinner cho danh mục
     private Button btnSave;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -21,16 +24,19 @@ public class activity_add_post extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        // Ánh xạ các EditText và Button
+        // Ánh xạ các EditText, Spinner và Button
         etID = findViewById(R.id.etId);  // ID bài viết
         etTitle = findViewById(R.id.etTitle);
         etDetailContent = findViewById(R.id.etDetailContent);
         etImage = findViewById(R.id.etImage);
-        etCategory = findViewById(R.id.etCategory); // Ánh xạ EditText category
+        spCategory = findViewById(R.id.spCategory); // Ánh xạ Spinner danh mục
         btnSave = findViewById(R.id.btnSave);
 
         // Khi trang AddPost được mở, lấy ID tiếp theo từ Firestore
         loadNextPostID();
+
+        // Khởi tạo danh sách danh mục
+        setupCategorySpinner();
 
         // Sự kiện nhấn nút "Lưu"
         btnSave.setOnClickListener(v -> savePost());
@@ -45,11 +51,19 @@ public class activity_add_post extends AppCompatActivity {
                         int nextPostId = documents.size() + 1; // Số lượng bài viết hiện có + 1
                         String postId = String.format("%03d", nextPostId);
                         // Điền ID tiếp theo vào etID
-                        etID.setText(String.valueOf("P"+postId));
+                        etID.setText(String.valueOf("P" + postId));
                     } else {
                         Toast.makeText(this, "Lỗi khi tải dữ liệu bài viết", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    // Phương thức khởi tạo Spinner danh mục
+    private void setupCategorySpinner() {
+        String[] categories = {"Mới nhất", "Xem nhiều", "Thời sự", "Kinh doanh", "Bất động sản","Khoa học","Giải trí"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
     }
 
     // Phương thức lưu bài viết
@@ -58,7 +72,7 @@ public class activity_add_post extends AppCompatActivity {
         String title = etTitle.getText().toString().trim();
         String detailContent = etDetailContent.getText().toString().trim();
         String image = etImage.getText().toString().trim();
-        String category = etCategory.getText().toString().trim(); // Lấy category từ người dùng nhập
+        String category = spCategory.getSelectedItem().toString(); // Lấy danh mục được chọn
 
         // Kiểm tra dữ liệu nhập
         if (title.isEmpty() || detailContent.isEmpty() || image.isEmpty() || category.isEmpty()) {
