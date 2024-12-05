@@ -21,6 +21,13 @@
         android:layout_margin="50dp"
         android:text="Thoát" />
 
+    <Button
+        android:id="@+id/btnSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="100dp"
+        android:text="Chuyển trang Cài đặt" />
+
     <!-- Bottom Navigation -->
 
     <FrameLayout

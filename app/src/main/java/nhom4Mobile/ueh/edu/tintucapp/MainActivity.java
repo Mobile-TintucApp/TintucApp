@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AdminPage.class);
             startActivity(intent);
         });
+        Button btnSetting = findViewById(R.id.btnSetting);
+        btnSetting.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Setting.class);
+            startActivity(intent);
+        });
         // Load HomeFragment by default
         //loadFragment(new HomeFragment());
 
