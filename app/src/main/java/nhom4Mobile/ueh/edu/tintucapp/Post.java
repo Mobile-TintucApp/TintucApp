@@ -8,6 +8,10 @@ public class Post {
     private String category;
     private boolean status;
 
+    // Constructor không tham số (bắt buộc cho Firebase)
+    public Post() {
+    }
+
     // Constructor có id
     public Post(String id, String title, String detailContent, String imageUrl, String category, boolean status) {
         this.id = id;

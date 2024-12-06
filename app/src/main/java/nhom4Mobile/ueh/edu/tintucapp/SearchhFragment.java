@@ -65,27 +65,44 @@ public class SearchhFragment extends Fragment {
 
 
     private void searchPosts(String query) {
+        Log.d("SearchFragment", "Bắt đầu tìm kiếm với từ khóa: " + query);
+
         db.collection("posts")
-                .orderBy("title") // Can change this to a field you want to sort by
+                .orderBy("title") // Có thể thay đổi field nếu cần
                 .startAt(query)
-                .endAt(query + "\uf8ff") // Firebase range query for search
+                .endAt(query + "\uf8ff")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        postList.clear(); // Clear previous search results
+                        postList.clear(); // Xóa kết quả tìm kiếm cũ
+                        int foundCount = 0; // Đếm số lượng kết quả tìm thấy
+
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Post post = document.toObject(Post.class);
-                            // Filter posts based on title, category, or content
+
+                            // Kiểm tra xem bài viết có chứa từ khóa không
                             if (post.getCategory().contains(query) ||
                                     post.getDetailContent().contains(query) ||
                                     post.getTitle().contains(query)) {
-                                postList.add(post); // Add matching post to list
+                                postList.add(post); // Thêm bài viết vào danh sách
+                                foundCount++; // Tăng số lượng kết quả tìm thấy
                             }
                         }
-                        adapter.notifyDataSetChanged(); // Notify adapter of data change
+
+                        // Log số lượng bài viết tìm thấy
+                        Log.d("SearchFragment", "Tìm thấy " + foundCount + " bài viết.");
+
+                        // Cập nhật giao diện
+                        adapter.notifyDataSetChanged();
+
+                        // Thêm log nếu không có kết quả nào
+                        if (foundCount == 0) {
+                            Log.d("SearchFragment", "Không tìm thấy bài viết nào.");
+                        }
                     } else {
-                        Log.e("SearchFragment", "Error getting documents: ", task.getException());
+                        Log.e("SearchFragment", "Lỗi khi truy vấn: ", task.getException());
                     }
                 });
     }
+
 }

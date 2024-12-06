@@ -2,37 +2,18 @@ package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.content.Intent;
-import android.os.Bundle;
+
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 
 
 public class MenuFragment extends Fragment {
@@ -97,7 +78,7 @@ public class MenuFragment extends Fragment {
                 btnMenuTTCN.setText(email != null ? email : "No Name");
             }
         } else {
-            Log.e("Auth", "Người dùng chưa đăng nhập");
+            Log.d("Auth", "Người dùng chưa đăng nhập");
         }
 
         // Đặt sự kiện click cho nút "Đăng nhập/ Tạo tài khoản"

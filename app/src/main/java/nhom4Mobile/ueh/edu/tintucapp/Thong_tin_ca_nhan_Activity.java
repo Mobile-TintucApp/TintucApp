@@ -57,6 +57,7 @@ public class Thong_tin_ca_nhan_Activity extends AppCompatActivity {
             mAuth.signOut();  // Đăng xuất Firebase
             Toast.makeText(Thong_tin_ca_nhan_Activity.this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Thong_tin_ca_nhan_Activity.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
