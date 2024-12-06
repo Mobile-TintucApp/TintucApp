@@ -96,6 +96,10 @@ public class MenuFragment extends Fragment {
         });
 
         // Đặt sự kiện click cho nút "Cài đặt"
+        btnMenuCD.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Setting.class);
+            startActivity(intent);
+        });
         // Đặt sự kiện click cho nút "Gửi ý kiến"
 
 
