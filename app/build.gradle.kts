@@ -49,7 +49,6 @@
         implementation("com.google.firebase:firebase-auth:21.3.0")
         //CSDL
         implementation("com.google.firebase:firebase-firestore:24.7.1")
-
         implementation("com.google.firebase:firebase-database:19.6.0")
         //Thông báo đẩy
         implementation("com.google.firebase:firebase-messaging:23.1.2")
@@ -65,5 +64,8 @@
 
         //Thêm thư viện volly  - cho thời tiết
         implementation("com.android.volley:volley:1.2.1")
+
+        // Thêm thư viện hỗ trợ GIF
+        implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.27")
     }
 
