@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,7 +33,7 @@ public class News_Detail_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_news_detail);
 
         // Liên kết các nút
-        btn_back = findViewById(R.id.btn_back);
+        btn_back = findViewById(R.id.btnBack);
         btn_fav = findViewById(R.id.btn_fav);
         titleText = findViewById(R.id.txtTitle);
         txt_img = findViewById(R.id.txt_image);

@@ -37,7 +37,7 @@
             android:background="@drawable/view_gradient" />
 
         <Button
-            android:id="@+id/btn_menuDN"
+            android:id="@+id/btn_menuTTCN"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:backgroundTint="@color/white"

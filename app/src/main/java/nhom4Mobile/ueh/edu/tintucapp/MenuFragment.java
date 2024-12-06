@@ -2,27 +2,45 @@ package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MenuFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -30,15 +48,6 @@ public class MenuFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MenuFragment newInstance(String param1, String param2) {
         MenuFragment fragment = new MenuFragment();
         Bundle args = new Bundle();
@@ -63,16 +72,37 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        // Lấy thông tin từ FirebaseAuth
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+
         // Khởi tạo các thành phần giao diện
-        Button btnMenuDN = view.findViewById(R.id.btn_menuDN);
+        Button btnMenuTTCN = view.findViewById(R.id.btn_menuTTCN);
         Button btnMenuTGS = view.findViewById(R.id.btn_menuTGS);
         Button btnMenuDS = view.findViewById(R.id.btn_menuDS);
         Button btnMenuCD = view.findViewById(R.id.btn_menuCD);
         Button btnMenuTT = view.findViewById(R.id.btn_menuTT);
 
+
+        if (user != null) {
+            String email = user.getEmail(); // Lấy email người dùng
+            String displayName = user.getDisplayName(); // Lấy tên hiển thị nếu có
+
+            if (displayName != null && !displayName.isEmpty()) {
+                // Hiển thị tên người dùng trên Button
+                btnMenuTTCN.setText(displayName);
+            } else {
+                // Nếu không có tên hiển thị, dùng email thay thế
+                btnMenuTTCN.setText(email != null ? email : "No Name");
+            }
+        } else {
+            Log.e("Auth", "Người dùng chưa đăng nhập");
+        }
+
         // Đặt sự kiện click cho nút "Đăng nhập/ Tạo tài khoản"
-        btnMenuDN.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Login.class);
+        btnMenuTTCN.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Thong_tin_ca_nhan_Activity.class);
             startActivity(intent);
         });
 

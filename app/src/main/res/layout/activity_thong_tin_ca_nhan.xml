@@ -43,15 +43,6 @@
                 android:layout_marginBottom="8dp" />
 
             <!-- Mô tả về người dùng -->
-            <TextView
-                android:id="@+id/userDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mô tả về bản thân người dùng."
-                android:textSize="16sp"
-                android:textColor="#666666"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp" />
 
             <!-- Thông tin liên hệ -->
             <TextView
@@ -117,22 +108,12 @@
         android:paddingHorizontal="16dp">
 
         <ImageButton
-            android:id="@+id/btn_back"
+            android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/baseline_arrow_back_24"
             android:contentDescription="Quay lại"
-            android:background="?attr/selectableItemBackground"
-            android:padding="8dp" />
-
-        <ImageButton
-            android:id="@+id/btn_fav"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_turned_in_not_24"
-            android:contentDescription="Lưu tin yêu thích"
             android:background="?attr/selectableItemBackground"
             android:padding="8dp" />
 
