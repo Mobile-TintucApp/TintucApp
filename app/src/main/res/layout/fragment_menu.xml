@@ -46,7 +46,7 @@
             android:drawableTint="@color/gray"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="Đăng nhập/ Tạo tài khoản"
+            android:text="Nguyen Van A"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -73,6 +73,7 @@
             android:paddingEnd="8dp"
             android:text="Tin gắn sao"
             android:textAlignment="viewStart"
+            android:textAllCaps="false"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:iconTint="@color/gray"
@@ -98,6 +99,7 @@
             android:paddingEnd="8dp"
             android:text="Đọc sau"
             android:textAlignment="viewStart"
+            android:textAllCaps="false"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:iconTint="@color/gray"
@@ -123,9 +125,10 @@
             android:paddingEnd="8dp"
             android:text="Cài đặt"
             android:textAlignment="viewStart"
+            android:textAllCaps="false"
             android:textColor="@color/gray"
             android:textSize="16sp"
-            app:iconTint="@color/gray"
+            app:iconTint="@color/white"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="406dp" />
 
@@ -136,28 +139,6 @@
             android:background="#C5C5C5"
             android:backgroundTint="#C5C5C5" />
 
-        <Button
-            android:id="@+id/btn_menuGYK"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/baseline_drive_file_move_24"
-            android:drawableRight="@drawable/baseline_arrow_forward_24"
-            android:drawableTint="@color/gray"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="Gửi ý kiến"
-            android:textAlignment="viewStart"
-            android:textColor="@color/gray"
-            android:textSize="16sp"
-            app:iconTint="@color/gray" />
-
-        <View
-            android:id="@+id/view6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#C5C5C5"
-            android:backgroundTint="#C5C5C5" />
         <Button
             android:id="@+id/btn_menuTT"
             android:layout_width="match_parent"
@@ -170,6 +151,7 @@
             android:paddingEnd="8dp"
             android:text="Thời tiết"
             android:textAlignment="viewStart"
+            android:textAllCaps="false"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:iconTint="@color/gray" />

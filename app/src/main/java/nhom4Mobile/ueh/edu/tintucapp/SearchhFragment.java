@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,79 +31,58 @@ public class SearchhFragment extends Fragment {
     private SearchAdapter adapter;
     private List<Post> postList = new ArrayList<>();
     private FirebaseFirestore db;
+    private EditText editSearch;
+    private Button btnSearchh;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_searchh, container, false);
 
+        // RecyclerView setup
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Khởi tạo danh sách postList
+        postList = new ArrayList<>();
         adapter = new SearchAdapter(postList, getContext());
         recyclerView.setAdapter(adapter);
-
+        // Firebase instance
         db = FirebaseFirestore.getInstance();
 
-        // Hướng dẫn thêm menu vào Fragment
-        setHasOptionsMenu(true);
+        // Find search-related views
+        editSearch = view.findViewById(R.id.editSearch);
+        btnSearchh = view.findViewById(R.id.btnSearchh);
 
+        // Search button click handler
+        btnSearchh.setOnClickListener(v -> {
+            String query = editSearch.getText().toString().trim();
+            if (!query.isEmpty()) {
+                searchPosts(query); // Call search function when search button is clicked
+            }
+        });
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.option_search, menu); // Đảm bảo menu là option_search.xml
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.app_bar_search) {
-            // Khi người dùng nhấn vào icon search, SearchView sẽ hiện ra
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    // Cấu hình SearchView
-    private void setupSearchView(Menu menu) {
-        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchPosts(query); // Gọi hàm tìm kiếm khi submit
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.isEmpty()) {
-                    postList.clear();
-                    adapter.notifyDataSetChanged();
-                }
-                return false;
-            }
-        });
-    }
 
     private void searchPosts(String query) {
         db.collection("posts")
-                .orderBy("title")
+                .orderBy("title") // Can change this to a field you want to sort by
                 .startAt(query)
-                .endAt(query + "\uf8ff")
+                .endAt(query + "\uf8ff") // Firebase range query for search
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        postList.clear();
+                        postList.clear(); // Clear previous search results
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Post post = document.toObject(Post.class);
-                            // Lọc các trường: category, detail, title Content
-                            if (post.getCategory().contains(query) || post.getDetailContent().contains(query) || post.getTitle().contains(query)) {
-                                postList.add(post);
+                            // Filter posts based on title, category, or content
+                            if (post.getCategory().contains(query) ||
+                                    post.getDetailContent().contains(query) ||
+                                    post.getTitle().contains(query)) {
+                                postList.add(post); // Add matching post to list
                             }
                         }
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged(); // Notify adapter of data change
                     } else {
                         Log.e("SearchFragment", "Error getting documents: ", task.getException());
                     }

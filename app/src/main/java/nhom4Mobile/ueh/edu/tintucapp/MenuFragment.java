@@ -68,7 +68,6 @@ public class MenuFragment extends Fragment {
         Button btnMenuTGS = view.findViewById(R.id.btn_menuTGS);
         Button btnMenuDS = view.findViewById(R.id.btn_menuDS);
         Button btnMenuCD = view.findViewById(R.id.btn_menuCD);
-        Button btnMenuGYK = view.findViewById(R.id.btn_menuGYK);
         Button btnMenuTT = view.findViewById(R.id.btn_menuTT);
 
         // Đặt sự kiện click cho nút "Đăng nhập/ Tạo tài khoản"
