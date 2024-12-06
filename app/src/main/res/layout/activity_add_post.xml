@@ -17,6 +17,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="ID Bài viết"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <EditText
@@ -24,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID sẽ được tự động tạo"
+            android:textColor="#000000"
             android:inputType="text"
             android:enabled="false" />
 
@@ -45,12 +47,14 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="Tiêu đề"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
             android:hint="Nhập nội dung chính"
             android:inputType="text" />
 
@@ -59,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nội dung chi tiết"
+            android:textColor="#000000"
             android:textSize="16sp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp" />
@@ -68,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:hint="Nhập nội dung chi tiết"
+            android:textColor="#000000"
             android:inputType="textMultiLine"
             android:gravity="top"
             android:scrollbars="vertical" />
@@ -78,6 +84,7 @@
             android:layout_height="wrap_content"
             android:text="Hình ảnh"
             android:textSize="16sp"
+            android:textColor="#000000"
             android:paddingTop="16dp"
             android:paddingBottom="8dp" />
 
@@ -86,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập liên kết hoặc đường dẫn hình ảnh"
+            android:textColor="#000000"
             android:inputType="textUri" />
 
         <!-- Danh mục -->
@@ -94,11 +102,13 @@
             android:layout_height="wrap_content"
             android:text="Danh mục"
             android:textSize="16sp"
+            android:textColor="#000000"
             android:paddingTop="16dp"
             android:paddingBottom="8dp" />
 
         <Spinner
             android:id="@+id/spCategory"
+            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
