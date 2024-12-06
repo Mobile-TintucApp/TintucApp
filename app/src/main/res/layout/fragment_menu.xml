@@ -46,7 +46,7 @@
             android:drawableTint="@color/gray"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="Nguyen Van A"
+            android:text="Đăng nhập"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
             android:textColor="@color/gray"
