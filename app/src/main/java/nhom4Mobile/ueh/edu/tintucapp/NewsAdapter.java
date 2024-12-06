@@ -18,10 +18,16 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private Context context;
     private List<Post> postList;
+    private OnItemClickListener listener; // Listener để lắng nghe sự kiện click
 
     public NewsAdapter(Context context, List<Post> postList) {
         this.context = context;
         this.postList = postList;
+    }
+
+    // Phương thức để gán listener từ bên ngoài
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,7 +36,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         View view = LayoutInflater.from(context).inflate(R.layout.news_list, parent, false);
         return new NewsViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
@@ -55,8 +60,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.bookmark_button.setOnClickListener(v -> {
             // Handle bookmark action here
         });
-    }
 
+        // Handle item click event
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(post); // Gọi listener khi item được nhấn
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -68,6 +79,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         postList.clear();
         postList.addAll(newPostList);
         notifyDataSetChanged();
+    }
+
+    // Interface để lắng nghe sự kiện click vào item
+    public interface OnItemClickListener {
+        void onItemClick(Post post);
     }
 
     static class NewsViewHolder extends RecyclerView.ViewHolder {
@@ -84,5 +100,4 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             bookmark_button = itemView.findViewById(R.id.bookmark_button);
         }
     }
-
 }

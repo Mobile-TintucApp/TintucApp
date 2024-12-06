@@ -1,5 +1,6 @@
 package nhom4Mobile.ueh.edu.tintucapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,9 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +73,25 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
+        // Set the item click listener for the adapter
+        adapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Post newsItem) {
+                Intent intent = new Intent(getActivity(), News_Detail_Activity.class);
+                intent.putExtra("title", newsItem.getTitle());
+                intent.putExtra("category", newsItem.getCategory());
+                intent.putExtra("imageUrl", newsItem.getImageUrl());
+                intent.putExtra("content", newsItem.getDetailContent());
+                getActivity().startActivity(intent);
+            }
+        });
+
         // Load data from Firestore
         loadPostsFromFirestore();
 
         return rootView;
     }
+
 
     private void loadPostsFromFirestore() {
         db.collection("posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
