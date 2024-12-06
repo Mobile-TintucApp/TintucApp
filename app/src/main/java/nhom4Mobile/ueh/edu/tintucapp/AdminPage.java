@@ -3,16 +3,17 @@ package nhom4Mobile.ueh.edu.tintucapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.widget.AdapterView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,25 +24,25 @@ public class AdminPage extends AppCompatActivity {
     private List<Post> itemList;
     private Button btnAdd, btnEdit, btnDelete, logout;
     private Post selectedPost;
-    private int selectedPosition = -1; // Vị trí của item được chọn
+    private int selectedPosition = -1;
 
-    // Khai báo FirebaseFirestore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Spinner spinnerCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
 
-        // Ánh xạ RecyclerView và Button
         recyclerView = findViewById(R.id.recyclerView);
         btnAdd = findViewById(R.id.btnAdd);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
         logout = findViewById(R.id.logoutAdBtn);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));  // Cấu hình LayoutManager
+        spinnerCategory = findViewById(R.id.spinnerCategory);
 
-        // Khởi tạo adapter và gán vào RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         itemList = new ArrayList<>();
         adapter = new AdminItemAdapter(itemList, (item, position) -> {
             selectedPost = item;
@@ -50,99 +51,165 @@ public class AdminPage extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        // Tải dữ liệu từ Firestore khi trang mở
-        loadDataFromFirestore();
+        loadDataFromFirestore(); // Tải dữ liệu khi mở trang
 
-        // Sự kiện cho nút "Thêm"
-        btnAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminPage.this, activity_add_post.class);
-            startActivityForResult(intent, 1); // Gọi activity_add_post và đợi kết quả
+        // Thêm adapter cho Spinner
+        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
+                this, R.array.category_list, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(categoryAdapter);
+
+        // Sự kiện cho Spinner
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedCategory = (String) parentView.getItemAtPosition(position);
+
+                if (selectedCategory.equals("Tất cả")) {
+                    loadDataFromFirestore(); // Tải lại toàn bộ dữ liệu
+                } else {
+                    filterDataByCategory(selectedCategory); // Lọc dữ liệu theo danh mục
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                loadDataFromFirestore(); // Nếu không chọn gì, tải lại toàn bộ dữ liệu
+            }
         });
 
-        // Sự kiện cho nút "Sửa"
+        // Xử lý nút thêm, sửa, xóa, đăng xuất
+        btnAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminPage.this, activity_add_post.class);
+            startActivityForResult(intent, 1);
+        });
+
         btnEdit.setOnClickListener(v -> {
             if (selectedPost != null) {
                 Intent intent = new Intent(AdminPage.this, EditPostActivity.class);
-                // Truyền thông tin bài viết qua Intent
                 intent.putExtra("postId", selectedPost.getId());
                 intent.putExtra("postTitle", selectedPost.getTitle());
                 intent.putExtra("postDetailContent", selectedPost.getDetailContent());
                 intent.putExtra("postImage", selectedPost.getImageUrl());
                 intent.putExtra("postCategory", selectedPost.getCategory());
                 intent.putExtra("postStatus", selectedPost.isStatus());
-                startActivityForResult(intent, 2); // Gọi activity chỉnh sửa bài viết
+                startActivityForResult(intent, 2);
             } else {
                 Toast.makeText(this, "Vui lòng chọn bài viết cần sửa", Toast.LENGTH_SHORT).show();
             }
         });
+
         btnDelete.setOnClickListener(v -> {
             if (selectedPost != null) {
-                // Cập nhật trạng thái của bài viết thành false (đánh dấu là đã xóa)
                 deletePost(selectedPost.getId());
             } else {
                 Toast.makeText(this, "Vui lòng chọn bài viết cần xóa", Toast.LENGTH_SHORT).show();
             }
         });
 
-        logout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
-            }
+        logout.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            finish();
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Sau khi quay lại từ activity_add_post, tải lại dữ liệu từ Firestore
-            loadDataFromFirestore();
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {
-            // Sau khi quay lại từ EditPostActivity, tải lại dữ liệu từ Firestore
-            loadDataFromFirestore();
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) { // Quay về từ AddPostActivity
+                String selectedCategory = spinnerCategory.getSelectedItem().toString();
+
+                if (selectedCategory.equals("Tất cả")) {
+                    loadDataFromFirestore(); // Tải lại toàn bộ dữ liệu
+                } else {
+                    filterDataByCategory(selectedCategory); // Tải dữ liệu theo danh mục
+                }
+            } else if (requestCode == 2) { // Quay về từ EditPostActivity
+                // Cập nhật lại danh sách sau khi chỉnh sửa
+                String selectedCategory = spinnerCategory.getSelectedItem().toString();
+
+                if (selectedCategory.equals("Tất cả")) {
+                    loadDataFromFirestore(); // Tải lại toàn bộ dữ liệu
+                } else {
+                    filterDataByCategory(selectedCategory); // Tải dữ liệu theo danh mục
+                }
+            }
         }
     }
 
+    // This should be outside the onActivityResult() method.
     private void loadDataFromFirestore() {
-        // Truy vấn collection "posts" từ Firestore
-        db.collection("posts") // Lấy collection "posts" từ Firestore
+        db.collection("posts")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        itemList.clear(); // Xóa dữ liệu cũ trước khi thêm mới
+                        itemList.clear();
 
-                        // Lấy danh sách bài viết từ Firestore
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String id = document.getId();  // Lấy ID của bài viết
+                            String id = document.getId();
                             String title = document.getString("title");
                             String detailContent = document.getString("detailContent");
                             String imageUrl = document.getString("imageUrl");
                             String category = document.getString("category");
                             boolean status = document.getBoolean("status");
 
-                            // Tạo đối tượng Post và thêm vào danh sách
                             Post post = new Post(id, title, detailContent, imageUrl, category, status);
                             itemList.add(post);
                         }
 
-                        // Cập nhật RecyclerView
                         adapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(this, "Lỗi khi tải dữ liệu từ Firestore", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    private void filterDataByCategory(String category) {
+        db.collection("posts")
+                .whereEqualTo("category", category)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        itemList.clear();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getId();
+                            String title = document.getString("title");
+                            String detailContent = document.getString("detailContent");
+                            String imageUrl = document.getString("imageUrl");
+                            String postCategory = document.getString("category");
+                            boolean status = document.getBoolean("status");
+
+                            Post post = new Post(id, title, detailContent, imageUrl, postCategory, status);
+                            itemList.add(post);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(this, "Lỗi khi tải dữ liệu từ Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void deletePost(String postId) {
-        // Cập nhật trạng thái của bài viết thành false (xóa)
         db.collection("posts").document(postId)
-                .update("status", false)  // Cập nhật trạng thái bài viết thành false
+                .update("status", false)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Bài viết đã được xóa", Toast.LENGTH_SHORT).show();
-                    loadDataFromFirestore(); // Tải lại dữ liệu sau khi xóa
+
+                    // Lấy danh mục hiện tại từ Spinner
+                    String selectedCategory = spinnerCategory.getSelectedItem().toString();
+
+                    if (selectedCategory.equals("Tất cả")) {
+                        loadDataFromFirestore(); // Tải lại toàn bộ dữ liệu
+                    } else {
+                        filterDataByCategory(selectedCategory); // Tải dữ liệu theo danh mục
+                    }
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Lỗi khi xóa bài viết", Toast.LENGTH_SHORT).show());
     }
+
 }
