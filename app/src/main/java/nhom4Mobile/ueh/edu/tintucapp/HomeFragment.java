@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
                 intent.putExtra("category", newsItem.getCategory());
                 intent.putExtra("imageUrl", newsItem.getImageUrl());
                 intent.putExtra("content", newsItem.getDetailContent());
+                intent.putExtra("id", newsItem.getId()); // Pass the post ID
                 getActivity().startActivity(intent);
             }
         });
