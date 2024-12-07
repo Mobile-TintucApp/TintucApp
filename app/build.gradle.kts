@@ -61,10 +61,8 @@
         // Thêm Glide
         implementation("com.github.bumptech.glide:glide:4.12.0")
         annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
-
         //Thêm thư viện volly  - cho thời tiết
         implementation("com.android.volley:volley:1.2.1")
-
         // Thêm thư viện hỗ trợ GIF
         implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.27")
     }

@@ -68,13 +68,23 @@
                     android:layout_centerVertical="true"/>
 
                 <ImageButton
-                    android:id="@+id/bookmark_button"
+                    android:id="@+id/btn_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="33dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/baseline_star_border_24"
+                    android:layout_alignParentRight="true"/>
+
+                <ImageButton
+                    android:id="@+id/btn_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/baseline_turned_in_not_24"
-                    android:contentDescription="Bookmark"/>
+                    android:layout_alignParentRight="true"/>
 
             </RelativeLayout>
         </LinearLayout>

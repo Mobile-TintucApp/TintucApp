@@ -57,7 +57,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                 .into(holder.txt_img);
 
         // Optional: Handle bookmark button click
-        holder.bookmark_button.setOnClickListener(v -> {
+        holder.btn_save.setOnClickListener(v -> {
             // Handle bookmark action here
         });
 
@@ -89,7 +89,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     static class NewsViewHolder extends RecyclerView.ViewHolder {
         TextView txt_title, txt_body, txt_category;
         ImageView txt_img;
-        ImageButton bookmark_button;
+        ImageButton btn_save;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,7 +97,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             txt_body = itemView.findViewById(R.id.txt_body);
             txt_category = itemView.findViewById(R.id.txt_category);
             txt_img = itemView.findViewById(R.id.txt_image);
-            bookmark_button = itemView.findViewById(R.id.bookmark_button);
+            btn_save = itemView.findViewById(R.id.btn_save);
         }
     }
 }

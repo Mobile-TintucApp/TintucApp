@@ -13,6 +13,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements CategorySelectionListener {
     private AppBarLayout topNavigation;
@@ -48,6 +49,13 @@ public class MainActivity extends AppCompatActivity implements CategorySelection
             defaultChip.setChecked(true);
             onCategorySelected(defaultChip.getText().toString()); // Gọi sự kiện mặc định
         }
+
+        // Đăng ký thiết bị nhận thông báo từ topic FCM
+        FirebaseMessaging.getInstance().subscribeToTopic("newsUpdates")
+                .addOnCompleteListener(task -> {
+                    String msg = task.isSuccessful() ? "Đăng ký thành công" : "Đăng ký thất bại";
+                    Log.d("FCM", msg);
+                });
 
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             // Kiểm tra nếu có chip nào được chọn

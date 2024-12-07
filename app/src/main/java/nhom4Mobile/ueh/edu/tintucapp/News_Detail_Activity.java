@@ -1,35 +1,29 @@
 package nhom4Mobile.ueh.edu.tintucapp;
 
 import android.content.Intent;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 
 public class News_Detail_Activity extends AppCompatActivity {
 
-    private ImageButton btn_back, btn_fav;
+    private ImageButton btn_back, btn_fav, btn_save;
     private TextView titleText, categoryText, contentText;
     private ImageView txt_img;
     private boolean isFavorite = false; // Trạng thái lưu tin yêu thích
+    private boolean isSaved = false; // Trạng thái lưu tin "save"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_news_detail);
 
         // Liên kết các nút
@@ -39,6 +33,7 @@ public class News_Detail_Activity extends AppCompatActivity {
         txt_img = findViewById(R.id.txt_image);
         categoryText = findViewById(R.id.txtStatus);
         contentText = findViewById(R.id.txtBody);
+        btn_save = findViewById(R.id.btn_save);
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
@@ -57,13 +52,6 @@ public class News_Detail_Activity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_background) // Ảnh placeholder
                 .into(txt_img); // Hiển thị ảnh vào ImageView
 
-        // Xử lý phần padding với hệ thống
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         // Xử lý nút quay lại
         btn_back.setOnClickListener(v -> onBackPressed());
 
@@ -71,23 +59,40 @@ public class News_Detail_Activity extends AppCompatActivity {
         btn_fav.setOnClickListener(v -> {
             isFavorite = !isFavorite; // Đổi trạng thái yêu thích
             updateFavoriteIcon(); // Cập nhật màu icon
+
+            // Thêm log để kiểm tra trạng thái
+            Log.d("News_Detail_Activity", "Favorite state: " + isFavorite);
+
             String message = isFavorite ? "Đã lưu vào tin yêu thích" : "Đã bỏ khỏi tin yêu thích";
+            Toast.makeText(News_Detail_Activity.this, message, Toast.LENGTH_SHORT).show();
+        });
+
+        // Xử lý nút lưu "save"
+        btn_save.setOnClickListener(v -> {
+            isSaved = !isSaved; // Đổi trạng thái lưu
+            updateSaveIcon(); // Cập nhật icon của btn_save
+
+            // Thêm log để kiểm tra trạng thái
+            Log.d("News_Detail_Activity", "Saved state: " + isSaved);
+
+            String message = isSaved ? "Đã lưu tin vào danh sách" : "Đã bỏ khỏi danh sách lưu";
             Toast.makeText(News_Detail_Activity.this, message, Toast.LENGTH_SHORT).show();
         });
     }
 
-
     private void updateFavoriteIcon() {
-        Drawable drawable = btn_fav.getDrawable();
         if (isFavorite) {
-            // Chuyển icon sang màu vàng
-            ColorFilter yellowFilter = new PorterDuffColorFilter(
-                    getResources().getColor(android.R.color.holo_orange_light),
-                    PorterDuff.Mode.SRC_IN);
-            drawable.setColorFilter(yellowFilter);
+            btn_fav.setImageResource(R.drawable.baseline_star_24);  // Đổi icon yêu thích
         } else {
-            // Khôi phục icon về màu gốc
-            drawable.clearColorFilter();
+            btn_fav.setImageResource(R.drawable.baseline_star_border_24);  // Đặt lại icon yêu thích
+        }
+    }
+
+    private void updateSaveIcon() {
+        if (isSaved) {
+            btn_save.setImageResource(R.drawable.baseline_turned_in_24);  // Đổi icon "save"
+        } else {
+            btn_save.setImageResource(R.drawable.baseline_turned_in_not_24);  // Đặt lại icon "save"
         }
     }
 }
