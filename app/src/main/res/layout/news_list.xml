@@ -75,7 +75,8 @@
                     android:layout_marginEnd="33dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/baseline_star_border_24"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"/>
 
                 <ImageButton
                     android:id="@+id/btn_save"
@@ -84,7 +85,8 @@
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/baseline_turned_in_not_24"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"/>
 
             </RelativeLayout>
         </LinearLayout>

@@ -71,19 +71,17 @@ public class News_Detail_Activity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(txt_img);
 
+        // Lấy trạng thái từ Firestore
+        fetchStateFromFirestore();
+
         // Xử lý nút quay lại
         btn_back.setOnClickListener(v -> onBackPressed());
 
-
-
         // Xử lý nút lưu yêu thích
         btn_fav.setOnClickListener(v -> {
-            isFavorite = !isFavorite; // Đổi trạng thái yêu thích
-            updateFavoriteIcon(); // Cập nhật màu icon
-            saveFavorite(); // Save the state to Firestore
-
-            // Thêm log để kiểm tra trạng thái
-            Log.d("News_Detail_Activity", "Favorite state: " + isFavorite);
+            isFavorite = !isFavorite;
+            updateFavoriteIcon();
+            saveFavorite();
 
             String message = isFavorite ? "Đã lưu vào tin yêu thích" : "Đã bỏ khỏi tin yêu thích";
             Toast.makeText(News_Detail_Activity.this, message, Toast.LENGTH_SHORT).show();
@@ -91,17 +89,15 @@ public class News_Detail_Activity extends AppCompatActivity {
 
         // Xử lý nút lưu "save"
         btn_save.setOnClickListener(v -> {
-            isSaved = !isSaved; // Đổi trạng thái lưu
-            updateSaveIcon(); // Cập nhật icon của btn_save
-            saveFavorite(); // Save the state to Firestore
-
-            // Thêm log để kiểm tra trạng thái
-            Log.d("News_Detail_Activity", "Saved state: " + isSaved);
+            isSaved = !isSaved;
+            updateSaveIcon();
+            saveFavorite();
 
             String message = isSaved ? "Đã lưu tin vào danh sách" : "Đã bỏ khỏi danh sách lưu";
             Toast.makeText(News_Detail_Activity.this, message, Toast.LENGTH_SHORT).show();
         });
     }
+
 
     private void updateFavoriteIcon() {
         if (isFavorite) {
@@ -141,6 +137,23 @@ public class News_Detail_Activity extends AppCompatActivity {
                     Log.w("News_Detail_Activity", "Error saving favorite state", e);
                 });
     }
+
+    private void fetchStateFromFirestore() {
+        DocumentReference docRef = db.collection("new").document(postId + "_" + userEmail);
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                isFavorite = documentSnapshot.getBoolean("favor") != null && documentSnapshot.getBoolean("favor");
+                isSaved = documentSnapshot.getBoolean("save") != null && documentSnapshot.getBoolean("save");
+
+                // Cập nhật giao diện
+                updateFavoriteIcon();
+                updateSaveIcon();
+            }
+        }).addOnFailureListener(e -> {
+            Log.w("News_Detail_Activity", "Error fetching state from Firestore", e);
+        });
+    }
+
 
 
 }

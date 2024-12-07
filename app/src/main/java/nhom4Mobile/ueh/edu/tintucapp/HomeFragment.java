@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -32,6 +33,7 @@ public class HomeFragment extends Fragment {
     private NewsAdapter adapter;
 
     private String currentCategory = "Mới nhất"; // Default category
+    private String userEmail; // User email to pass to the adapter
 
     public HomeFragment() {
         // Required empty public constructor
@@ -52,6 +54,11 @@ public class HomeFragment extends Fragment {
         FirebaseApp.initializeApp(requireContext());
         db = FirebaseFirestore.getInstance();
 
+        // Get user email from FirebaseAuth
+        userEmail = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getEmail()
+                : "default_email@example.com"; // Fallback email if not logged in
+
         // Check if the category is passed and set it
         if (getArguments() != null) {
             currentCategory = getArguments().getString("category", "Mới nhất");
@@ -64,7 +71,9 @@ public class HomeFragment extends Fragment {
 
         // Initialize RecyclerView
         recyclerView = rootView.findViewById(R.id.reclyclerview);
-        adapter = new NewsAdapter(requireContext(), postList);
+
+        // Pass db and userEmail to adapter
+        adapter = new NewsAdapter(requireContext(), postList, db, userEmail);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
