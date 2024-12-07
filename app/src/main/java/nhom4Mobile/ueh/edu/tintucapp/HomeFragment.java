@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class HomeFragment extends Fragment {
     private List<Post> postList = new ArrayList<>();
@@ -30,37 +31,31 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private String currentCategory = "Mới nhất"; // Default category
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    // newInstance method to pass category data
+    public static HomeFragment newInstance(String category) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("category", category); // Pass category
         fragment.setArguments(args);
         return fragment;
     }
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         FirebaseApp.initializeApp(requireContext());
         db = FirebaseFirestore.getInstance();
+
+        // Check if the category is passed and set it
+        if (getArguments() != null) {
+            currentCategory = getArguments().getString("category", "Mới nhất");
+        }
     }
 
     @Override
@@ -86,38 +81,50 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Load data from Firestore
-        loadPostsFromFirestore();
+        // Load data for the selected category
+        loadPostsFromFirestore(currentCategory);
 
         return rootView;
     }
 
-
-    private void loadPostsFromFirestore() {
-        db.collection("posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    error.printStackTrace();
-                    return;
-                }
-                if (snapshots != null) {
-                    postList.clear();
-                    for (QueryDocumentSnapshot document : snapshots) {
-                        Map<String, Object> data = document.getData();
-                        Post post = new Post(
-                                document.getId(),
-                                (String) data.get("title"),
-                                (String) data.get("detailContent"),
-                                (String) data.get("imageUrl"),
-                                (String) data.get("category"),
-                                (Boolean) data.get("status")
-                        );
-                        postList.add(post);
+    /**
+     * Load posts from Firestore based on the selected category.
+     * @param category The category to filter posts by.
+     */
+    private void loadPostsFromFirestore(String category) {
+        db.collection("posts")
+                .whereEqualTo("status", true) // Only get active posts
+                .whereEqualTo("category", category) // Filter by category
+                .orderBy("title", Query.Direction.ASCENDING) // Optional: Sort by title
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            error.printStackTrace();
+                            return;
+                        }
+                        if (snapshots != null) {
+                            postList.clear();
+                            for (QueryDocumentSnapshot document : snapshots) {
+                                Post post = document.toObject(Post.class);
+                                post.setId(document.getId()); // Get Firestore ID
+                                postList.add(post);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
                     }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
+                });
+    }
+
+    /**
+     * Update the category and refresh the data.
+     * @param category The new category selected by the user.
+     */
+    public void updateCategory(String category) {
+        if (isAdded() && !currentCategory.equals(category)) {
+            currentCategory = category; // Update category
+            Log.d("HomeFragment", "Updated category: " + category);
+            loadPostsFromFirestore(category); // Reload data
+        }
     }
 }
