@@ -168,10 +168,6 @@ public class Tin_gan_sao_Activity extends AppCompatActivity {
             DocumentReference docRef = db.collection("new").document(documentId);
             docRef.update("favor", favorited[0])
                     .addOnSuccessListener(aVoid -> {
-                        if (!favorited[0]) {
-                            // Nếu favor = false, xóa bài viết khỏi giao diện
-                            articlesContainer.removeView(cardView);
-                        }
                         Toast.makeText(this, favorited[0] ? "Đã thêm vào Favor" : "Đã bỏ khỏi Favor", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
@@ -194,10 +190,6 @@ public class Tin_gan_sao_Activity extends AppCompatActivity {
             DocumentReference docRef = db.collection("new").document(documentId);
             docRef.update("save", saved[0])
                     .addOnSuccessListener(aVoid -> {
-                        if (!saved[0]) {
-                            // Nếu save = false, xóa bài viết khỏi giao diện
-                            articlesContainer.removeView(cardView);
-                        }
                         Toast.makeText(this, saved[0] ? "Đã lưu bài viết" : "Đã bỏ lưu bài viết", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
