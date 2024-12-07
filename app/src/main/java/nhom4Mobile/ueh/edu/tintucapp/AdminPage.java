@@ -85,7 +85,11 @@ public class AdminPage extends AppCompatActivity {
         });
 
         btnEdit.setOnClickListener(v -> {
-            if (selectedPost != null) {
+            if (selectedPosition != RecyclerView.NO_POSITION) {
+                // Lấy bài viết mới nhất từ danh sách dựa trên vị trí
+                selectedPost = itemList.get(selectedPosition);
+
+                // Mở EditPostActivity với dữ liệu được cập nhật
                 Intent intent = new Intent(AdminPage.this, EditPostActivity.class);
                 intent.putExtra("postId", selectedPost.getId());
                 intent.putExtra("postTitle", selectedPost.getTitle());

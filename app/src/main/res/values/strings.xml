@@ -13,4 +13,14 @@
         <item>Khoa học</item>
         <item>Giải trí</item>
     </string-array>
+    <string-array name="category_list_edit">
+
+        <item>Mới nhất</item>
+        <item>Xem nhiều</item>
+        <item>Thời sự</item>
+        <item>Kinh doanh</item>
+        <item>Bất động sản</item>
+        <item>Khoa học</item>
+        <item>Giải trí</item>
+    </string-array>
 </resources>

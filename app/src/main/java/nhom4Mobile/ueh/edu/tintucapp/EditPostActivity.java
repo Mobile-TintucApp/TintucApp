@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditPostActivity extends AppCompatActivity {
 
-    private EditText etID, etTitle, etDetailContent, etImage, etCategory;
+    private EditText etID, etTitle, etDetailContent, etImage;
+    private Spinner spCategory;
     private Button btnSave;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String postId;
@@ -20,12 +23,12 @@ public class EditPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
 
-        // Ánh xạ các EditText và Button
+        // Ánh xạ các EditText, Spinner và Button
         etID = findViewById(R.id.etId);
         etTitle = findViewById(R.id.etTitle);
         etDetailContent = findViewById(R.id.etDetailContent);
         etImage = findViewById(R.id.etImage);
-        etCategory = findViewById(R.id.etCategory);
+        spCategory = findViewById(R.id.spCategory);
         btnSave = findViewById(R.id.btnSave);
 
         // Nhận dữ liệu từ AdminPage
@@ -35,17 +38,37 @@ public class EditPostActivity extends AppCompatActivity {
         etTitle.setText(intent.getStringExtra("postTitle"));
         etDetailContent.setText(intent.getStringExtra("postDetailContent"));
         etImage.setText(intent.getStringExtra("postImage"));
-        etCategory.setText(intent.getStringExtra("postCategory"));
+
+        // Thiết lập Spinner với danh mục
+        setupCategorySpinner(intent.getStringExtra("postCategory"));
 
         // Sự kiện nhấn nút "Lưu"
         btnSave.setOnClickListener(v -> savePost());
+    }
+
+    private void setupCategorySpinner(String selectedCategory) {
+        // Lấy danh sách danh mục từ strings.xml
+        String[] categories = getResources().getStringArray(R.array.category_list_edit);
+
+        // Adapter cho Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
+
+        // Đặt giá trị được chọn sẵn
+        if (selectedCategory != null) {
+            int position = adapter.getPosition(selectedCategory);
+            if (position >= 0) {
+                spCategory.setSelection(position);
+            }
+        }
     }
 
     private void savePost() {
         String title = etTitle.getText().toString().trim();
         String detailContent = etDetailContent.getText().toString().trim();
         String image = etImage.getText().toString().trim();
-        String category = etCategory.getText().toString().trim();
+        String category = spCategory.getSelectedItem().toString(); // Lấy giá trị từ Spinner
 
         // Kiểm tra dữ liệu nhập
         if (postId == null || postId.isEmpty()) {
