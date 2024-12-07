@@ -28,4 +28,4 @@ Xây dựng 1 app tin nhanh bước đầu với các tính năng cơ bản: Đ�
 - Nguyễn Nam Thái - https://github.com/ThainguyenUEH
 - Lê Trần Việt Thu - https://github.com/vietthukt
 ### Lời cảm ơn
-Để hoàn thành đề tài này chúng em xin cảm ơn thầy Thành đã tận tình giảng dạy cùng với những bài lap quý giá và hữu ích. 
+Để hoàn thành đề tài này chúng em xin cảm ơn thầy Thành đã tận tình giảng dạy cùng với những bài lab quý giá và hữu ích. 
