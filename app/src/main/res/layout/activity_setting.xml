@@ -3,7 +3,7 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="?attr/colorBackground"
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal">
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cài đặt"
-        android:textColor="@color/text_color"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Chế độ nền tối"
-            android:textColor="@color/text_color"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="16sp" />
 
         <Switch
@@ -46,7 +46,7 @@
         android:id="@+id/app_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_color"
+        android:textColor="?attr/colorOnBackground"
         android:text="Giới thiệu ứng dụng"
         android:textSize="16sp"
         android:layout_marginBottom="12dp"
@@ -60,7 +60,7 @@
         android:id="@+id/app_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_color"
+        android:textColor="?attr/colorOnBackground"
         android:text="Phiên bản ứng dụng"
         android:textSize="16sp"
         android:layout_marginBottom="24dp"
@@ -74,9 +74,9 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quay lại MainActivity"
-        android:textColor="@color/text_color"
+        android:text="Back"
+        android:textColor="?attr/colorOnPrimary"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/teal_200" />
+        android:backgroundTint="?attr/colorPrimary" />
 
 </LinearLayout>

@@ -40,11 +40,10 @@ public class Setting extends AppCompatActivity {
             saveThemePreference(isChecked);
 
             // Thay đổi chế độ sáng/tối
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
+            AppCompatDelegate.setDefaultNightMode(
+                    isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+            );
+
 
             // Cập nhật giao diện thủ công (nếu cần)
             recreate(); // Tải lại Activity để áp dụng giao diện mới
