@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements CategorySelection
     private AppBarLayout topNavigation;
     private FrameLayout fragmentContainer;
     private String currentCategory = "Mới nhất";
+    private FirestoreSyncManager firestoreSyncManager;
 
     @Override
     public void onCategorySelected(String category) {
@@ -91,6 +92,12 @@ public class MainActivity extends AppCompatActivity implements CategorySelection
             }
             return true;
         });
+
+        firestoreSyncManager = new FirestoreSyncManager(this);
+
+        // Đồng bộ hóa dữ liệu từ Firestore vào SQLite
+        firestoreSyncManager.syncFirestoreToSQLite();
+
     }
 
     private void loadFragment(Fragment fragment) {

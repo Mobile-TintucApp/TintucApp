@@ -17,12 +17,15 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
     private List<Post> postList;
     private Context context;
+    private OnItemClickListener listener;
 
     public SearchAdapter(List<Post> postList, Context context) {
         this.postList = postList;
         this.context = context;
     }
-
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,11 +39,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.tvTitle.setText(post.getTitle());
         holder.tvCategory.setText(post.getCategory());
         Glide.with(context).load(post.getImageUrl()).into(holder.ivThumbnail);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(post);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return postList.size();
+    }
+    public interface OnItemClickListener {
+        void onItemClick(Post post);
     }
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder {

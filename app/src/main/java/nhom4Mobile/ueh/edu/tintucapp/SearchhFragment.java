@@ -1,5 +1,6 @@
 package nhom4Mobile.ueh.edu.tintucapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,10 @@ public class SearchhFragment extends Fragment {
     private EditText editSearch;
     private Button btnSearchh;
 
+    public SearchhFragment() {
+        // Required empty public constructor
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,12 +51,25 @@ public class SearchhFragment extends Fragment {
         postList = new ArrayList<>();
         adapter = new SearchAdapter(postList, getContext());
         recyclerView.setAdapter(adapter);
+
         // Firebase instance
         db = FirebaseFirestore.getInstance();
 
         // Find search-related views
         editSearch = view.findViewById(R.id.editSearch);
         btnSearchh = view.findViewById(R.id.btnSearchh);
+
+        // Thiết lập sự kiện click cho item
+        adapter.setOnItemClickListener(post -> {
+            // Xử lý khi người dùng click vào post
+            Intent intent = new Intent(getActivity(), News_Detail_Activity.class);
+            intent.putExtra("title", post.getTitle());
+            intent.putExtra("category", post.getCategory());
+            intent.putExtra("imageUrl", post.getImageUrl());
+            intent.putExtra("content", post.getDetailContent());
+            intent.putExtra("id", post.getId()); // Chuyển ID bài viết
+            startActivity(intent); // Mở News_Detail_Activity
+        });
 
         // Search button click handler
         btnSearchh.setOnClickListener(v -> {
@@ -60,9 +78,9 @@ public class SearchhFragment extends Fragment {
                 searchPosts(query); // Call search function when search button is clicked
             }
         });
+
         return view;
     }
-
 
     private void searchPosts(String query) {
         Log.d("SearchFragment", "Bắt đầu tìm kiếm với từ khóa: " + query);
